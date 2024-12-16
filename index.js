@@ -93,6 +93,8 @@ bot.on("message", (msg) => {
 app.post(
   "https://bhargav-balinge-gsc.github.io/telegram-desk-booking-chatbot/webhook",
   (req, res) => {
+    console.log("hello");
+
     const intent = req.body.queryResult.intent.displayName;
     const parameters = req.body.queryResult.parameters;
 
