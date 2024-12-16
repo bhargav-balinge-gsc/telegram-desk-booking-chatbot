@@ -86,34 +86,38 @@ bot.on("message", (msg) => {
 });
 
 // Dialogflow Webhook Endpoint
-app.post("/webhook", (req, res) => {
-  const intent = req.body.queryResult.intent.displayName;
-  const parameters = req.body.queryResult.parameters;
+app.post(
+  "https://bhargav-balinge-gsc.github.io/telegram-desk-booking-chatbot/webhook",
+  (req, res) => {
+    const intent = req.body.queryResult.intent.displayName;
+    const parameters = req.body.queryResult.parameters;
 
-  if (intent === "BookSeat") {
-    const { location, booking_date, seat_no } = parameters;
+    if (intent === "BookSeat") {
+      const { location, booking_date, seat_no } = parameters;
+      console.log(location);
 
-    // Save to database
-    db.query(
-      "INSERT INTO bookings (location, booking_date, seat_no) VALUES (?, ?, ?)",
-      [location, booking_date, seat_no],
-      (err) => {
-        if (err) {
-          console.error("Error saving booking:", err);
-          res.send({
-            fulfillmentText: "There was an error saving your booking.",
-          });
-        } else {
-          res.send({
-            fulfillmentText: `Thank you! Your booking at ${location} has been saved.`,
-          });
+      // Save to database
+      db.query(
+        "INSERT INTO bookings (location, booking_date, seat_no) VALUES (?, ?, ?)",
+        [location, booking_date, seat_no],
+        (err) => {
+          if (err) {
+            console.error("Error saving booking:", err);
+            res.send({
+              fulfillmentText: "There was an error saving your booking.",
+            });
+          } else {
+            res.send({
+              fulfillmentText: `Thank you! Your booking at ${location} has been saved.`,
+            });
+          }
         }
-      }
-    );
-  } else {
-    res.send({ fulfillmentText: "I didn't understand your request." });
+      );
+    } else {
+      res.send({ fulfillmentText: "I didn't understand your request." });
+    }
   }
-});
+);
 
 // Start Express Server
 const PORT = 3000;
