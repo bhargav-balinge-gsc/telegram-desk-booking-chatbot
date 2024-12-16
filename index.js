@@ -56,12 +56,16 @@ bot.on("message", (msg) => {
       bot.sendMessage(chatId, "Which seat do you want to select?");
       break;
     case 2:
-      session.data.seat = text; // Store the seat selection
+      session.data.seat_no = text; // Store the seat selection
 
       // Save to database
       db.query(
-        "INSERT INTO bookings (location, booking_date, seat) VALUES (?, ?, ?)",
-        [session.data.location, session.data.booking_date, session.data.seat],
+        "INSERT INTO bookings (location, booking_date, seat_no) VALUES (?, ?, ?)",
+        [
+          session.data.location,
+          session.data.booking_date,
+          session.data.seat_no,
+        ],
         (err) => {
           if (err) {
             bot.sendMessage(
